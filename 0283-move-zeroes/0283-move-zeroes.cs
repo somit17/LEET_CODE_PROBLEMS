@@ -1,20 +1,25 @@
 public class Solution {
     public void MoveZeroes(int[] nums) {
-                List<int> tempArray = new();
+        int j = -1;
         for (int i = 0; i < nums.Length; i++)
         {
-            if (nums[i] != 0) tempArray.Add(nums[i]);
+            if (nums[i] == 0)
+            {
+                j = i;
+                break;
+            }
         }
 
-        for (int i = 0; i < tempArray.Count(); i++)
+               if (j != -1){
+        for (int i = j + 1; i < nums.Length; i++)
         {
-            nums[i] = tempArray[i];
+            if (nums[i] != 0)
+            {
+                (nums[i], nums[j]) = (nums[j], nums[i]);
+                j++;
+            }
         }
-
-        for (int i = tempArray.Count; i < nums.Length; i++)
-        {
-            nums[i] = 0;
         }
-
     }
+       
 }
