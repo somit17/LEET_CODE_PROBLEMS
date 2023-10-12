@@ -1,14 +1,45 @@
 public class Solution {
     public int NumJewelsInStones(string jewels, string stones) {
-         int counter = 0;
-        for (int i = 0; i < jewels.Length; i++)
+int counter = 0;
+
+        #region Brute Force
+
+        // for (int i = 0; i < jewels.Length; i++)
+        // {
+        //     for (int j = 0; j < stones.Length; j++)
+        //     {
+        //         if (jewels[i] == stones[j]) counter++;
+        //     }
+        // }
+
+        #endregion
+
+        #region Optimal
+
+
+        Dictionary<char, int> jewelsHash = new();
+        //List<char> stonesHash = new();
+        for (int j = 0; j < jewels.Length; j++)
         {
-            for (int j = 0; j < stones.Length; j++)
+            jewelsHash.Add(jewels[j],0);
+        }
+
+        for (int j = 0; j < stones.Length; j++)
+        {
+            if (jewelsHash.ContainsKey(stones[j]))
             {
-                if (jewels[i] == stones[j]) counter++;
+                jewelsHash[stones[j]] += 1;
             }
         }
 
-        return counter;
+        //Get count of values in list
+        var count =  jewelsHash.Where(x => x.Value > 0).Select(x => x.Value).Sum();
+
+        return count;
+
+
+        #endregion
+
+        //return counter;
     }
 }
