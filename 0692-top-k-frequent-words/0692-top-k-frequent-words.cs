@@ -15,8 +15,7 @@ public class Solution {
             }
         }
 
-        var newMap = map.OrderByDescending(x => x.Value).ThenBy(x => x.Key).ToList();
-        returnList = newMap.Select(x => x.Key).Take(k).ToList();
-        return returnList; 
+        return map.OrderByDescending(x => x.Value).ThenBy(x => x.Key).Select(x => x.Key).Take(k).ToList();
+        
     }
 }
