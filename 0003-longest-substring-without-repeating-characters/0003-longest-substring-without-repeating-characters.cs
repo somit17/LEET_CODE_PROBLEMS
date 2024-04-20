@@ -1,24 +1,22 @@
 public class Solution {
     public int LengthOfLongestSubstring(string s) {
-        int lPointer = 0, rPointer = 0,maxLength=0;
-        HashSet<char> hashSet = new();
-
-        while (rPointer<s.Length)
+         int length=0,L=0,R=0;
+        HashSet<char> set = new();
+        while(R<s.Length)
         {
-            char currentChar = s[rPointer];
-            if (hashSet.Contains(currentChar))
+            char currentChar = s[R];
+            if (set.Contains(currentChar))
             {
-                hashSet.Remove(s[lPointer]);
-                lPointer++;
+                set.Remove(s[L]);
+                L++;
             }
             else
             {
-                hashSet.Add(currentChar);
-                maxLength = Math.Max(maxLength, rPointer - lPointer + 1);
-                rPointer++;
+                set.Add(currentChar);
+                length = Math.Max(length, R - L + 1);
+                R++;
             }
         }
-
-        return maxLength;
+        return length;
     }
 }
