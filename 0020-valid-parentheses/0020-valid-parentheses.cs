@@ -1,25 +1,23 @@
 public class Solution {
     public bool IsValid(string s) {
-       var stack = new Stack<char>();
-        var pairs = new Dictionary<char, char>()
+       Dictionary<char, char> map = new()
         {
-            [')'] = '(',
-            [']'] = '[',
-            ['}'] = '{'
+            { '(', ')' },
+            { '{', '}' },
+            { '[', ']' }
         };
-
-        foreach (var eachChar in s)
+        Stack<char> stack = new();
+        //"]]"
+        foreach (char paranthesis in s)
         {
-            if (!pairs.ContainsKey(eachChar))
+            if (map.ContainsKey(paranthesis))
             {
-                stack.Push(eachChar);
+                stack.Push(map[paranthesis]);
             }
-            else if (stack.Count == 0 || stack.Pop() != pairs[eachChar])
-            {
+            else if (stack.Count == 0 || stack.Pop() != paranthesis)
                 return false;
-            }
         }
 
-        return stack.Count == 0;  
+        return stack.Count == 0;
     }
 }
