@@ -1,27 +1,31 @@
 public class Solution {
-    private  int evaluate(int b, int a, string op) => op switch{
+    int evaluateResult(int a, int b, string op) => op switch
+    {
         "+" => a + b,
-        "-" => a - b,
+        "-" => b-a,
         "*" => a * b,
-        "/" => a / b,
-        _   => throw new Exception()
+        "/" => b/a,
+        _ => throw new Exception()
     };
-    public int EvalRPN(string[] tokens) {
-        var stack = new Stack<int>();
-        var result = 0;
-        
-        foreach(var token in tokens) {
-            int number = 0;
-            var isNumber = int.TryParse(token, out number);
-            if(isNumber) 
+
+    public int EvalRPN(string[] tokens)
+    {
+        int res = 0;
+        Stack<int> stack = new();
+        foreach (string eachOperand in tokens)
+        {
+            bool isNum = int.TryParse(eachOperand, out int number);
+            if (isNum)
+            {
                 stack.Push(number);
-            else {
-                result = evaluate(stack.Pop(), stack.Pop(), token); 
-                stack.Push(result);
             }
-            
+            else
+            {
+                res = evaluateResult(stack.Pop() , stack.Pop() , eachOperand);
+                stack.Push(res);
+            }
         }
-        
+
         return stack.Pop();
     }
 }
