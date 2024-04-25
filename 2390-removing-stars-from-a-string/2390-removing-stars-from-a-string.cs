@@ -1,7 +1,7 @@
 public class Solution {
     public string RemoveStars(string s) {
-       Stack<char> stack = new Stack<char>();
-        foreach (var eachChar in s)
+      Stack<char> stack = new();
+        foreach (char eachChar in s)
         {
             if (eachChar.Equals('*'))
             {
@@ -13,18 +13,6 @@ public class Solution {
             }
         }
 
-        List<char> finalOriginalString = new();
-        while (stack.Count>0)
-        {
-            finalOriginalString.Add(stack.Pop());
-        }
-
-        StringBuilder returnString = new StringBuilder();
-        for (int i = finalOriginalString.Count-1; i >=0 ; i--)
-        {
-            returnString.Append(finalOriginalString[i]);
-        }
-         
-        return returnString.ToString(); 
+        return string.Join("", stack.Reverse());  
     }
 }
