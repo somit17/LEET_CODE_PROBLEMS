@@ -11,23 +11,15 @@
  */
 public class Solution {
     public ListNode MiddleNode(ListNode head) {
-        ListNode traverse = head;
-        int totalPos = 0;
-        while (traverse != null)
+        ListNode fast = head, slow = head;
+        if (head == null && head.next == null)
+            return null;
+        while (fast != null && fast.next != null)
         {
-            traverse = traverse.next;
-            totalPos++;
+            fast = fast.next.next;
+            slow = slow.next;
         }
 
-        int splitPos = totalPos / 2 ;
-        ListNode current = head;
-        while (splitPos!=0)
-        {
-            current = current.next;
-            splitPos--;
-        }
-
-        head = current;
-        return head;
+        return slow;
     }
 }
