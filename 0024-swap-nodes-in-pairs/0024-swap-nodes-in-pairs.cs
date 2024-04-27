@@ -11,30 +11,17 @@
  */
 public class Solution {
     public ListNode SwapPairs(ListNode head) {
-         //DummyNode
-        ListNode dummyNode = new ListNode()
-        {
-            val = 0,
-            next = head
-        };
-
-        ListNode prev = dummyNode, current = head;
-        while (current != null && current.next != null)
-        {
-            //Save pointers
-            ListNode secondNextPtr = current.next.next, nextPtr = current.next;
-
-            //Reverse pairs
-            nextPtr.next = current;
-            current.next = secondNextPtr;
-            prev.next = nextPtr;
-            
-            
-            //UpdatePtrs
-            prev = current;
-            current = current.next;
-        }
-
-        return dummyNode.next; 
+        if (head == null || head.next == null)
+            return head;
+        //A=head;
+        //B=head.next;
+        //C=head.next.next;
+        //A->B->C->....
+        
+        //A->C
+        ListNode temp = head.next;
+        head.next = SwapPairs(head.next.next);
+        temp.next = head;
+        return temp;
     }
 }
