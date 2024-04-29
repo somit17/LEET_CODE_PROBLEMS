@@ -10,95 +10,35 @@
  * }
  */
 public class Solution {
-      public void ReorderList(ListNode head)
+    public void ReorderList(ListNode head)
     {
-        // if (head != null)
-        // {
-        //     //Find middle
-        //     ListNode slow = head, fast = head.next;
-        //     while (fast !=null)
-        //     {
-        //         slow = slow.next;
-        //         fast = fast.next.next;
-        //     }
-        //     
-        //     //Split the Linked List
-        //     ListNode second = slow.next,prev=null,temp=second;
-        //     slow.next = null;
-        //     //Logic to reverse Linked List
-        //     while (second!=null)
-        //     {
-        //         temp = second.next;
-        //         second.next = prev;
-        //         prev = second;
-        //         second = temp;
-        //     }
-        //     
-        //     
-        //     //Merge 
-        //     ListNode first = head;
-        //     second = prev;
-        //     while (second!=null)
-        //     {
-        //         var temp1 = first.next;
-        //         var temp2 = second.next;
-        //         first.next = second;
-        //         second.next = temp1;
-        //         first = temp1;
-        //         second = temp2;
-        //     }
-        // }
-
-
-        if (head == null || head.next == null) return;
-        // find middle
-        var slow = head;
-        var fast = head.next;
-        var nodeCount = 1;
-        while (true)
+        ListNode fast = head, slow = head;
+        while (fast != null && fast.next != null)
         {
-            if (fast == null || fast.next == null) break;
             slow = slow.next;
-            nodeCount++;
             fast = fast.next.next;
         }
-
-        var middle = slow.next;
-        slow.next = null;
-
-
-        var secondHead = revList(middle);
-
-        // merge two lists
-        var first = head;
-        var second = secondHead;
-        while (second != null)
+        var reverseListHead = ReverseLinkedList(slow);
+        var current = head;
+        while (reverseListHead.next != null)
         {
-            var temp1 = first.next;
-            var temp2 = second.next;
-            first.next = second;
-            second.next = temp1;
-            first = temp1;
-            second = temp2;
+            var temp = current.next;
+            current.next = reverseListHead;
+            
+            var reverseTemp = reverseListHead.next;
+            reverseListHead.next = temp;
+            
+            current = temp;
+            reverseListHead = reverseTemp;
         }
-
-        return;
     }
 
-    private ListNode revList(ListNode head)
+    public ListNode ReverseLinkedList(ListNode head)
     {
-        ListNode prev = null;
-
-        var cur = head;
-
-        while (cur != null)
-        {
-            var temp = cur.next;
-            cur.next = prev;
-            prev = cur;
-            cur = temp;
-        }
-
-        return prev;
+        if (head == null || head.next==null) return head;
+        ListNode lastNode = ReverseLinkedList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return lastNode;
     }
 }
