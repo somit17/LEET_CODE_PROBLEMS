@@ -10,38 +10,37 @@
  * }
  */
 public class Solution {
-    public bool IsPalindrome(ListNode head) {
-        if (head == null)
+        public bool IsPalindrome(ListNode head)
+    {
+        if (head == null || head.next == null) return true;
+        var slow = head;
+        var fast = head;
+        ListNode prev = null;
+        while (fast != null && fast.next != null)
         {
-            return false;
+            prev = slow;
+            slow = slow.next;
+            fast = fast.next.next;
         }
-        string nodesData = TraverserNode(head);
-        int lP = 0,
-            rP = nodesData.Length-1;
-        while (lP < rP)
-        {
-            if (nodesData[lP] != nodesData[rP])
-            {
-                return false;
-            }
 
-            lP++;
-            rP--;
+        prev.next = null;
+        var tail = ReverseList(slow);
+        while (head != null && tail != null)
+        {
+            if (head.val != tail.val)
+                return false;
+            head=head.next;
+            tail=tail.next;
         }
 
         return true;
     }
-    
-    public string TraverserNode(ListNode head)
+    public ListNode ReverseList(ListNode head)
     {
-        StringBuilder nodesData = new StringBuilder();
-        ListNode current = head;
-        while (current != null)
-        {
-            nodesData.Append(current.val);
-            current = current.next;
-        }
-
-        return nodesData.ToString();
+        if (head == null || head.next==null) return head;
+        ListNode lastNode = ReverseList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return lastNode;
     }
 }
