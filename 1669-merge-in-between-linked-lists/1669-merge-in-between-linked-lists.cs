@@ -11,23 +11,49 @@
  */
 public class Solution {
     public ListNode MergeInBetween(ListNode list1, int a, int b, ListNode list2) {
-        ListNode prev = list1;
-        for (int i = 0; i < a - 1; i++) {
+         ListNode dummyNode = new(0);
+        dummyNode.next = list1;
+        var prev = dummyNode;
+        int start = a, len = 0;
+        var current = list1;
+        while (current != null)
+        {
+            current = current.next;
+            len++;
+        }
+
+        current = list1;
+        while (start > 0)
+        {
+            current = current.next;
+            prev = prev.next;
+            start--;
+        }
+
+        prev.next = null;
+        //prev = list2;
+        while (list2 != null)
+        {
+            prev.next = list2;
+            list2 = list2.next;
             prev = prev.next;
         }
 
-        ListNode temp = prev.next;
-        prev.next = list2;
-
-        while (list2.next != null) {
-            list2 = list2.next;
+        int diff = b - a;
+        while (diff > 0 && current != null)
+        {
+            current = current.next;
+            diff--;
         }
 
-        for (int i = 0; i < b - a + 1; i++) {
-            temp = temp.next;
+        //prev = list1;
+        while (current != null)
+        {
+            prev.next = current.next;
+            current = current.next;
+            prev = prev.next;
         }
 
-        list2.next = temp;
-        return list1;
+        return dummyNode.next;
     }
 }
