@@ -4,25 +4,20 @@ public class Solution {
         int n = deck.Length;
         int[] res = new int[deck.Length];
         System.Array.Fill(res, 0);
-        bool skip = false;
-        int i = 0, j = 0;
+        Queue<int> queue = new();
+        for (int i = 0; i < n; i++)
+            queue.Enqueue(i);
 
-        while (i < deck.Length)
+        for (int i = 0; i < n; i++)
         {
-            if (res[j] == 0)
+            int idx = queue.Peek();
+            queue.Dequeue();
+            res[idx] = deck[i];
+            if (queue.Count>0)
             {
-                if (!skip)
-                {
-                    res[j] = deck[i];
-                    i++;
-                }
-
-                skip = !skip;
+                queue.Enqueue(queue.Dequeue());
             }
-
-            j = (j + 1) % n;
         }
-
-        return res;   
+        return res;
     }
 }
