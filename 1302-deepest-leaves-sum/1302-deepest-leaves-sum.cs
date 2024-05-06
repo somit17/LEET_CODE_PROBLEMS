@@ -13,12 +13,9 @@
  */
 public class Solution {
     public int DeepestLeavesSum(TreeNode root) {
-       if (root == null)
-        {
+        if (root == null)
             return 0;
-        }
-
-        Queue<(TreeNode,int)> queue = new();
+        Queue<(TreeNode, int)> queue = new();
         List<(int, int)> hashMap = new(); //Map value with level
         int level = 0;
         queue.Enqueue((root,level));
@@ -29,19 +26,13 @@ public class Solution {
             {
                 var node = queue.Dequeue().Item1;
                 if (node.left != null)
-                {
                     queue.Enqueue((node.left,level));
-                }
                 if (node.right != null)
-                {
                     queue.Enqueue((node.right,level));
-                }
-            
                 hashMap.Add((node.val,level));
             }
             level++;
         }
-
         return  hashMap.Where(x => x.Item2 == level-1).Select(x=>x.Item1).Sum();  
     }
 }
