@@ -1,66 +1,59 @@
 public class Solution {
     public class TrieNode
     {
-        public Dictionary<char, TrieNode> children = new();
-        public bool IsEnd = false;
+        public Dictionary<char, TrieNode> Children = new();
+        public bool IsLast = false;
     }
-    public TrieNode root;
+
+    private TrieNode root;
+
     public Solution()
     {
         root = new();
     }
     public string ReplaceWords(IList<string> dictionary, string sentence) {
-      foreach (string word in dictionary)
+        foreach (var words in dictionary)
         {
-            Insert(word);
+            Insert(words);
         }
 
-        StringBuilder finalString = new();
-        string[] splitString = sentence.Split(" ");
-    foreach (string sWord in splitString)
+        StringBuilder finalString = new StringBuilder();
+        var splitStrings = sentence.Split(" ");
+        foreach (var eachWord in splitStrings)
         {
-            string root = FindRoot(sWord);
-            finalString.Append(root != null ? root : sWord);
+            var rootWord = FindRootWord(eachWord);
+            finalString.Append(rootWord != null ? rootWord : eachWord);
             finalString.Append(" ");
         }
-
         return finalString.ToString().TrimEnd();  
     }
-    
-    public string FindRoot(string word)
+    private string FindRootWord(string eachWord)
     {
-        TrieNode curr = root;
+        var current = root;
         StringBuilder sb = new();
-        foreach (char c in word)
+        foreach (char ch in eachWord)
         {
-            if (!curr.children.ContainsKey(c))
-            {
+            if (!current.Children.ContainsKey(ch))
                 return null;
-            }
-
-            sb.Append(c);
-            curr = curr.children[c];
-            if (curr.IsEnd)
-            {
-                return sb.ToString(); // Found a root
-            }
+            sb.Append(ch);
+            current = current.Children[ch];
+            if (current.IsLast)
+                return sb.ToString(); //root found
         }
-        return null; // No root found
+
+        return null;
     }
 
-    public void Insert(string word)
+    private void Insert(string words)
     {
-        TrieNode curr = root;
-        foreach (char c in word)
+        var currentNode = root;
+        foreach (char ch in words)
         {
-            if (!curr.children.ContainsKey(c))
-            {
-                curr.children[c] = new TrieNode();
-            }
-
-            curr = curr.children[c];
+            if (!currentNode.Children.ContainsKey(ch))
+                currentNode.Children[ch] = new TrieNode();
+            currentNode = currentNode.Children[ch];
         }
 
-        curr.IsEnd = true;
+        currentNode.IsLast = true;
     }
 }
