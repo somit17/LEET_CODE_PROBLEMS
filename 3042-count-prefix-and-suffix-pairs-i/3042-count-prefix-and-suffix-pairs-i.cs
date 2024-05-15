@@ -1,20 +1,31 @@
-public class TrieNode {
-    public Dictionary<char, TrieNode> Children { get; }
-    public bool IsEnd { get; set; }
-
-    public TrieNode() {
-        Children = new Dictionary<char, TrieNode>();
-        IsEnd = false;
-    }
-}
-
 public class Solution {
-    private TrieNode root;
+    public class TrieNode
+    {
+        public Dictionary<char, TrieNode> children = new();
+        public bool IsEnd = false;
+    }
+
+    TrieNode root;
 
     public Solution()
     {
         root = new TrieNode();
     }
+
+    public TrieNode InsertWords(TrieNode root, string s2)
+    {
+        var current = root;
+        foreach (var c in s2)
+        {
+            if (!current.children.ContainsKey(c))
+                current.children[c] = new TrieNode();
+            current = current.children[c];
+        }
+
+        current.IsEnd = true;
+        return root;
+    }
+
     public int CountPrefixSuffixPairs(string[] words) {
         int count = 0;
         for (int i = 0; i < words.Length - 1; i++) {
@@ -23,33 +34,24 @@ public class Solution {
             }
         }
         return count;
-    }private bool IsPrefixAndSuffix(string str1, string str2) {
-        TrieNode pnode = InsertWord(new TrieNode(), str2);
-        TrieNode snode = InsertWord(new TrieNode(), new string(str2.Reverse().ToArray()));
-        return SearchNode(pnode, str1) && 
-               SearchNode(snode, new string(str1.Reverse().ToArray()));
     }
-
-    private bool SearchNode(TrieNode root, string word) {
+    private bool StartsWith(TrieNode root, string word)
+    {
         TrieNode current = root;
-        foreach (char ch in word) {
-            if (!current.Children.ContainsKey(ch)) {
+        foreach (char ch in word)
+        {
+            if (!current.children.ContainsKey(ch))
                 return false;
-            }
-            current = current.Children[ch];
+            current = current.children[ch];
         }
+
         return true;
     }
 
-    private TrieNode InsertWord(TrieNode root, string word) {
-        TrieNode node = root;
-        foreach (char ch in word) {
-            if (!node.Children.ContainsKey(ch)) {
-                node.Children[ch] = new TrieNode();
-            }
-            node = node.Children[ch];
-        }
-        node.IsEnd = true;
-        return root;
+    public bool IsPrefixAndSuffix(string s1, string s2)
+    {
+        TrieNode pNode = InsertWords(new TrieNode(), s2);
+        TrieNode qNode = InsertWords(new TrieNode(), new string(s2.Reverse().ToArray()));
+        return StartsWith(pNode, s1) && StartsWith(qNode, new string(s1.Reverse().ToArray()));
     }
 }
