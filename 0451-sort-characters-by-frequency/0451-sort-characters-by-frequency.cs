@@ -1,25 +1,21 @@
 public class Solution {
     public string FrequencySort(string s) {
-        var map = new Dictionary<char, int>();
-        foreach (var eachChar in s)
+        Dictionary<char, int> hashMap = new(); //map char :: count
+        foreach (char c in s)
         {
-            if (map.ContainsKey(eachChar))
-            {
-                map.TryGetValue(eachChar, out int val);
-                map[eachChar] = val + 1;
-            }
+            if (!hashMap.ContainsKey(c))
+                hashMap.Add(c, 1);
             else
-            {
-                map.Add(eachChar,1);
-            }
+                hashMap[c]++;
         }
 
-        var newMap = map.OrderByDescending(x => x.Value).ToList();
-        StringBuilder returnString = new();
-        foreach (var keyValue in newMap)
+        var frqHash = hashMap.OrderByDescending(x => x.Value);
+        string finalans = "";
+        foreach (var data in frqHash)
         {
-            returnString.Append(new string(keyValue.Key,keyValue.Value));
+            finalans += string.Join("",Enumerable.Repeat(data.Key, data.Value));
         }
-        return returnString.ToString();
+
+        return finalans;
     }
 }
