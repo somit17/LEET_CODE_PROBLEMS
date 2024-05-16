@@ -1,33 +1,15 @@
 public class Solution {
     public int[] TopKFrequent(int[] nums, int k) {
-Dictionary<int, int> map = new();
-        foreach (var eachNum in nums)
+                Dictionary<int, int> hashMap = new Dictionary<int, int>(); // map num:count
+        foreach (int num in nums)
         {
-            if (map.ContainsKey(eachNum))
-            {
-                map.TryGetValue(eachNum, out int val);
-                map[eachNum] = val + 1;
-            }
-
+            if (!hashMap.ContainsKey(num))
+                hashMap.Add(num, 1);
             else
-            {
-                map.Add(eachNum,1);
-            }
+                hashMap[num]++;
         }
 
-        var returnList = new List<int>();
-        var pq = new PriorityQueue<int, int>();
-        foreach (var keyValue in map)
-        {
-            pq.Enqueue(keyValue.Key, map[keyValue.Key]);
-            if (pq.Count > k) pq.Dequeue();
-        }
+        return hashMap.OrderByDescending(x => x.Value).Select(x => x.Key).Take(k).ToArray();
 
-        while (k != 0)
-        {
-            returnList.Add(pq.Dequeue());
-            k--;
-        }
-        return returnList.ToArray();
     }
 }
