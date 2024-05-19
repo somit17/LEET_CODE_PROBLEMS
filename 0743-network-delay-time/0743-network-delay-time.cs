@@ -1,48 +1,48 @@
 public class Solution {
-    public int NetworkDelayTime(int[][] times, int nodes, int k) {
-       Dictionary<int, List<int[]>> adjacencyList = new();
-        for (int i = 1; i <= nodes + 1; i++)
-            adjacencyList[i] = new List<int[]>();
-
-        foreach (var edge in times)
+    public int NetworkDelayTime(int[][] times, int n, int k) {
+      Dictionary<int, List<int[]>> adjList = new();
+        for (int i = 1; i <= n; i++)
         {
-            int s = edge[0], d = edge[1], w = edge[2];
-            adjacencyList[s].Add(new[] { d, w });
+            adjList[i] = new List<int[]>();
         }
 
-        Dictionary<int, int> shortestDistances = new Dictionary<int, int>();
+        foreach (var time in times)
+        {
+            int src = time[0], dest = time[1], cost = time[2];
+            adjList[src].Add(new[]
+            {
+                dest, cost
+            });
+        }
+
+        int[] distance = new int[n + 1];
+        System.Array.Fill(distance, int.MaxValue);
+
+        //PriorityQUeue //dest:cost:priority
         var pq = new PriorityQueue<(int, int), int>();
-        pq.Enqueue((0, k), 0);
+        distance[k] = 0;
+        pq.Enqueue((k, 0), 0);
         while (pq.Count > 0)
         {
-            var (currWeight, node) = pq.Dequeue();
-            if (!shortestDistances.ContainsKey(node))
+            var (node, cost) = pq.Dequeue();
+            foreach (var v in adjList[node])
             {
-                shortestDistances[node] = currWeight;
-                if (adjacencyList.ContainsKey(node))
+                int newNode = v[0], dist = v[1];
+                int newDistance = dist + cost;
+                if (newDistance < distance[newNode])
                 {
-                    foreach (var next in adjacencyList[node])
-                    {
-                        var nextNode = next[0];
-                        var edgeWeight = next[1];
-                        var newDist = currWeight + edgeWeight;
-                        pq.Enqueue((newDist, nextNode), newDist);
-                    }
+                    distance[newNode] = newDistance;
+                    pq.Enqueue((newNode, newDistance), newDistance);
                 }
             }
         }
 
-        // Check for unreachable nodes
-        int reachableNodes = shortestDistances.Count(kv => kv.Value != int.MaxValue);
-        if (reachableNodes < nodes)
+        int result = Int32.MinValue;
+        for (int i = 1; i <= n; i++)
         {
-            return -1; // There are unreachable nodes
+            result = Math.Max(result, distance[i]);
         }
 
-        // Find the maximum time among all shortest paths
-        int maxTime = shortestDistances.Values.Max();
-
-        // Return the maximum time
-        return maxTime; 
+        return result == Int32.MaxValue ? -1 : result;
     }
 }
