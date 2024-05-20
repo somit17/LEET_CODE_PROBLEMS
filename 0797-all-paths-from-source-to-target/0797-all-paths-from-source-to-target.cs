@@ -1,19 +1,28 @@
 public class Solution {
-    List<IList<int>> res = new List<IList<int>>();
-    public IList<IList<int>> AllPathsSourceTarget(int[][] graph) {
-       if (graph == null || graph.Length == 0)
-            return res;
-        DFS(graph, 0, new List<int>());
-        return res;  
-    }
-    private void DFS(int[][] graph, int currentNode, List<int> path)
+    public IList<IList<int>> AllPathsSourceTarget(int[][] graph)
     {
-        path.Add(currentNode);
-        if (currentNode == graph.Length - 1)
-            res.Add(new List<int>(path));
+        IList<IList<int>> result = new List<IList<int>>();
+        int V = graph.Length;
+        List<int> temp = new List<int>();
+        int src = 0;
+        int target = V - 1;
+        DFS(src, target, graph, result, temp);
+
+        return result;
+    }
+
+    public void DFS(int u, int target, int[][] graph, IList<IList<int>> result, List<int> temp)
+    {
+        temp.Add(u);
+        if (u == target)
+            result.Add(new List<int>(temp));
         else
-            foreach (var node in graph[currentNode])
-                DFS(graph, node, path);
-        path.Remove(currentNode);
+        {
+            foreach (var v in graph[u])
+            {
+                DFS(v, target, graph, result, temp);
+            }
+        }
+        temp.RemoveAt(temp.Count-1);
     }
 }
