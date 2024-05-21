@@ -1,25 +1,18 @@
 public class Solution {
-    IList<IList<int>> allSubsets = new List<IList<int>>();
-    List<int> currSubset = new();
-
-    public IList<IList<int>> Subsets(int[] nums)
-    {
-        BackTrackingHelper(0, nums, currSubset, allSubsets);
+    public IList<IList<int>> Subsets(int[] nums) {
+        IList<IList<int>> allSubsets= new List<IList<int>>();
+        GenerateSubsets( allSubsets,new List<int>(), nums,0);
         return allSubsets;
     }
-
-    public void BackTrackingHelper(int i, int[] nums, List<int> currSubset, IList<IList<int>> allSubsets)
-    {
-        if (i >= nums.Length)
-        {
-            allSubsets.Add(new List<int>(currSubset));
+    public void GenerateSubsets(IList<IList<int>> allSubsets,List<int> currentSubset ,int[] nums,int i){
+        if(i>=nums.Length)
+        {   
+            allSubsets.Add(new List<int>(currentSubset));
             return;
         }
-        //Decision  to add element 
-        currSubset.Add(nums[i]);
-        BackTrackingHelper(i + 1, nums, currSubset, allSubsets);
-        currSubset.Remove(nums[i]);
-        //Decision not to add element
-        BackTrackingHelper(i + 1, nums, currSubset, allSubsets);
+        currentSubset.Add(nums[i]);
+        GenerateSubsets( allSubsets, currentSubset , nums, i+1);
+        currentSubset.RemoveAt(currentSubset.Count-1);   
+        GenerateSubsets( allSubsets, currentSubset , nums, i+1);    
     }
 }
