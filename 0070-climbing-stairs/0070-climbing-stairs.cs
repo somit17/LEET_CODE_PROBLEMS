@@ -1,17 +1,15 @@
 public class Solution {
-    int[] mem=new int[46];
+    
     public int ClimbStairs(int n) {
-        Array.Fill(mem,-1);
-        return solve(n);
-      }
-    int solve(int n){
-        if(n<0) return 0;
-        if(mem[n]!=-1){
-            return mem[n];
+        int[] dp = new int[n+1];
+        Array.Fill(dp,-1);
+        if(n==1||n==2)
+            return n;
+        dp[0]=0;dp[1]=1;dp[2]=2;
+        for(int i=3;i<=n;i++){
+            dp[i]=dp[i-1]+dp[i-2];
         }
-        if(n==0) return 1;
-        int oneStep=solve(n-1);
-        int twoStep=solve(n-2);
-        return  mem[n]=oneStep+twoStep;
-    }
+        return dp[n];
+      }
+    
 }
