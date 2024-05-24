@@ -1,15 +1,18 @@
 public class Solution {
     
     public int ClimbStairs(int n) {
-        int[] dp = new int[n+1];
-        Array.Fill(dp,-1);
         if(n==1||n==2)
             return n;
-        dp[0]=0;dp[1]=1;dp[2]=2;
+        int a=1;
+        int b=2;
+        int c=3;
         for(int i=3;i<=n;i++){
-            dp[i]=dp[i-1]+dp[i-2];
+            c=a+b;
+            int temp_b=b;
+            b=c;
+            a=temp_b;
         }
-        return dp[n];
+        return c;
       }
     
 }
