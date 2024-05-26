@@ -1,13 +1,17 @@
 public class Solution {
     public int LengthOfLIS(int[] nums) {
-        int[][] mem=new int[nums.Length+1][];
-        for(int i=0;i<nums.Length+1;i++){
-            mem[i]=new int[nums.Length];
-            for(int j=0;j<nums.Length;j++){
-                 mem[i][j]=-1;
-            }
+        int maxLis=1,n=nums.Length;
+        int[] dp=new int[n];
+        Array.Fill(dp,1);
+        for(int i=0;i<n;i++){
+           for(int j=0;j<i;j++){
+                if(nums[i]>nums[j]){
+                    dp[i]=Math.Max(dp[i], dp[j]+1);     
+                    maxLis=Math.Max(dp[i], maxLis);     
+                }
+            } 
         }
-        return Solve(nums,mem,0,-1);
+        return maxLis;
     }
     public int Solve(int[] nums,int[][] mem,int i,int prev){
         if (i >= nums.Length)
