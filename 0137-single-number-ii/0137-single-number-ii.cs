@@ -1,14 +1,20 @@
 public class Solution {
     public int SingleNumber(int[] nums) {
-        var dic=new Dictionary<int,int>();//map no:count
-        foreach(var num in nums){
-            if(!dic.ContainsKey(num)) dic[num]=1;
-            else dic[num]++;
+        int result=0;
+        for(int k=0;k<=31;k++){
+            int c1=0,c0=0;
+            int temp=(1<<k);
+            foreach(var num in nums){
+                if((num&temp)==0){
+                  c0++;  
+                }else{
+                    c1++;
+                }
+            }
+            if(c1%3==1){
+                result=(result|temp);
+            }
         }
-        foreach(var data in dic){
-            if(data.Value==1)
-                return data.Key;
-        }
-        return 0;
+        return result;
     }
 }
